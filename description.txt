@@ -1,0 +1,20 @@
+The general purpose of the this Alien Invasion project is to get used to working on a project that 
+spans multiple files. This will mean making sure my files are stored in there proper places so that my 
+imports can work smoothly and make sense. This will also mean clearly labeling my functions and classes,
+as well as putting appropriate descriptors to them to make sure they are easy to identify when I am deep
+into the code. I'll try to create as much of my own code as possible, but we will rely on the examples in
+python crash course 2nd edition to get us going.
+
+The general purpose of the game it self is for a user controlled ship to be able to move right 
+and left, while being able to shoot bullets at incoming enemy aliens. If an alien is shot, it should be 
+removed from the game screen and points should be added to the users score. If the alien touches the
+ship it should destroy it and end the game/take a life. I'd also like it to do general
+things, such as keep track of highscores, possibly play music, and advance to different levels.
+
+For now we start with the basics and move up from there. I started this code journey months ago with
+chapter 1 of python crash course, and dusting off some old college course tricks from 2019. Now I'm
+finely onto  the projects. Each day of practice is just one more step to a potential career.
+The reminder now is to keep practicing and keep working on it. Even ten minutes of practice is ten minutes
+closer to an end goal. Good luck and stay strong, you can do this.
+- Angelo Valenciana 08/25/2022
+
