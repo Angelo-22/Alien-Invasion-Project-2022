@@ -4,6 +4,12 @@ import sys
 import pygame
 # ^ The pygame module contains the functionality we need to make a game
 
+from settings import Settings
+# ^ this imports the Settings class from settings.py
+
+from ship import Ship
+# import  the Ship class
+
 class AlienInvasion:
     """ Overall class to manage game assests and behaviors """
 
@@ -11,10 +17,13 @@ class AlienInvasion:
         """ Initalize the game and create ingame resources """
         pygame.init()
         # ^ the pygame.init() functino intializes the background settings that pygame needs to work
+        self.settings = Settings()
+        # ^ this creates an instance of the settings class that we can call in all furutre modules 
+        # in our AlienInvasion class. Letting us access values like screen_width/height and bg_color
 
-        self.screen = pygame.display.set_mode((1000, 500))
+        self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         # ^ here we call on pygame.display.set_mode() to create a window to draw the games graphics
-        # ^ the (1200, 800) is a tuple that defineds the dimensions of the window
+        # ^ the (10000, 500) is a tuple that defineds the dimensions of the window
         # ^ this tuple is in pixels and reads (width, height)
         # ^ lastly we set these values to the attribute self.screen, so we can call on it later
 
@@ -26,10 +35,11 @@ class AlienInvasion:
         pygame.display.set_caption("Alien Invasion")
         # ^ pygame.display.set_caption titles our game window 
 
-        # set a background color
-        self.bg_color = (3, 19, 43)
-        # ^ colors in pygame are specified by RGB values
-
+        self.ship = Ship(self)
+        # ^ here we create an instance of ship, after the screen has been created
+        # The Ship class needs 1 argument, and instance of AlienInvasion
+        # the self arguement refers to the current instance of AlienInvasion, giving ship access to 
+        # it's resources
 
     def run_game(self):
     # ^ The game is controlled by this run_game method
@@ -49,8 +59,12 @@ class AlienInvasion:
                 # ^ The above code watches for keyboard and mouse movements
 
             # redraw the screen during each pass through the loop
-            self.screen.fill(self.bg_color)
+            self.screen.fill(self.settings.bg_color)
             # ^ here we use fill() to fill the screen surface with our specified background color
+
+            self.ship.blitme()
+            # after filling the background we draw the ship on the screen by calling ship.blitme() 
+            # this draws the ship on top of the background
 
             pygame.display.flip()
             # ^ The above code makes the most recently drawn screen visible
