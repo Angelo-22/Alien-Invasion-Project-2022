@@ -18,7 +18,7 @@ class AlienInvasion:
         pygame.init()
         # ^ the pygame.init() functino intializes the background settings that pygame needs to work
         self.settings = Settings()
-        # ^ this creates an instance of the settings class that we can call in all furutre modules 
+        # ^ this creates an instance of the settings class that we can call in all future modules 
         # in our AlienInvasion class. Letting us access values like screen_width/height and bg_color
 
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
@@ -47,30 +47,46 @@ class AlienInvasion:
         while True:
         # ^ The while loop contains an event loop and code that manages screen updates
 
-            for event in pygame.event.get():
-            # ^ an event is an actions the user performs while playing the game
-            # ^ such as hitting a key or moving the mouse
-            # ^ the loop 'listens' for events, then performs the apropriate action based on the event
-                if event.type == pygame.QUIT:
-                # ^ one example is the if statement here
-                # ^ if the event of the user hitting the windows close button occurs
-                # ^ the sys.exit() fucntion will activate, closing the game
-                    sys.exit()
-                # ^ The above code watches for keyboard and mouse movements
+            self._check_events()
+            # call the method that checks for events, like if the windowns been closed
 
-            # redraw the screen during each pass through the loop
-            self.screen.fill(self.settings.bg_color)
-            # ^ here we use fill() to fill the screen surface with our specified background color
+            self._update_screen()
+            # call the method that updates the screen on each pass through
 
-            self.ship.blitme()
-            # after filling the background we draw the ship on the screen by calling ship.blitme() 
-            # this draws the ship on top of the background
+    def _check_events(self):
+        """ respond to keypresses and mouse events """
+        for event in pygame.event.get():
+        # ^ an event is an actions the user performs while playing the game
+        # ^ such as hitting a key or moving the mouse
+        # ^ the loop 'listens' for events, then performs the apropriate action based on the event
+            if event.type == pygame.QUIT:
+            # ^ one example is the if statement here
+            # ^ if the event of the user hitting the windows close button occurs
+            # ^ the sys.exit() fucntion will activate, closing the game
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                # ^ KEYDOWN refers to when a key is pressed
+                if event.key == pygame.K_RIGHT:
+                    # moves the ship to the right, when right arrow is pressed
+                    self.ship.ship_rect.x += 10
+            # ^ The above code watches for keyboard and mouse movements
 
-            pygame.display.flip()
-            # ^ The above code makes the most recently drawn screen visible
-            # in it's current state it redraws a blank screen everytime we loop through
-            # pygame.display.flip() continuly updates the games elements, hiding the old ones
-            # creating the illusion of smooth movement
+    def _update_screen(self):
+        """ Redraw the screen on each pass through the loop """
+        # redraw the screen during each pass through the loop
+        self.screen.fill(self.settings.bg_color)
+        # ^ here we use fill() to fill the screen surface with our specified background color
+
+        self.ship.blitme()
+        # after filling the background we draw the ship on the screen by calling ship.blitme() 
+        # this draws the ship on top of the background
+
+        pygame.display.flip()
+        # ^ The above code makes the most recently drawn screen visible
+        # in it's current state it redraws a blank screen everytime we loop through
+        # pygame.display.flip() continuly updates the games elements, hiding the old ones
+        # creating the illusion of smooth movement
+    
 
 
 if __name__ == "__main__":
