@@ -10,6 +10,8 @@ from settings import Settings
 from ship import Ship
 # import  the Ship class
 
+from bullet import Bullet
+
 class AlienInvasion:
     """ Overall class to manage game assests and behaviors """
 
@@ -44,6 +46,8 @@ class AlienInvasion:
         # the self arguement refers to the current instance of AlienInvasion, giving ship access to 
         # it's resources
 
+        self.bullets = pygame.sprite.Group()
+
     def run_game(self):
     # ^ The game is controlled by this run_game method
         """ Start the main loop of the game """
@@ -57,6 +61,9 @@ class AlienInvasion:
             # call the method that updates the screen on each pass through
 
             self.ship.update_ship_position()
+
+            self.bullets.update()
+
 
     def _check_events(self):
         """ respond to keypresses and mouse events """
@@ -85,6 +92,8 @@ class AlienInvasion:
             self.ship.ship_move_left = True
         elif event.key == pygame.K_ESCAPE:
             sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
 
     def _check_keyup_events(self, event):
         """ Respond to when the key is released """
@@ -93,7 +102,10 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.ship_move_left = False
 
-
+    def _fire_bullet(self):
+        """ create a new bullet and add it to the group of bullets """
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
 
     def _update_screen(self):
         """ Redraw the screen on each pass through the loop """
@@ -104,6 +116,9 @@ class AlienInvasion:
         self.ship.blitme()
         # after filling the background we draw the ship on the screen by calling ship.blitme() 
         # this draws the ship on top of the background
+
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
 
         pygame.display.flip()
         # ^ The above code makes the most recently drawn screen visible
