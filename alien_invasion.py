@@ -57,13 +57,12 @@ class AlienInvasion:
             self._check_events()
             # call the method that checks for events, like if the windowns been closed
 
-            self._update_screen()
-            # call the method that updates the screen on each pass through
-
             self.ship.update_ship_position()
 
-            self.bullets.update()
+            self._update_bullets()
 
+            self._update_screen()
+            # call the method that updates the screen on each pass through
 
     def _check_events(self):
         """ respond to keypresses and mouse events """
@@ -104,8 +103,18 @@ class AlienInvasion:
 
     def _fire_bullet(self):
         """ create a new bullet and add it to the group of bullets """
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)
+        if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
+
+    def _update_bullets(self):
+        """ Update position of bullets and get rid of old bullets """
+        # Update bullets position
+        self.bullets.update()
+        # get rid of bullets that have disappear 
+        for bullet in self.bullets.copy():
+            if bullet.bullet_rect.bottom <= 0:
+                self.bullets.remove(bullet)
 
     def _update_screen(self):
         """ Redraw the screen on each pass through the loop """
