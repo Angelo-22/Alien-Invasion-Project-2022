@@ -25,3 +25,7 @@ class Settings:
         self.bullet_color = (163, 46, 46)
         # ^ these settings create a maroon bullet that is 3 pixels wide and 15 pixels high
         self.bullets_allowed = 5
+
+        # Alien Settings
+        self.alien_speed = 1.0
+        
