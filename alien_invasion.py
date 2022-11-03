@@ -1,11 +1,16 @@
 import sys
 # ^ we use tools from the sys module to close our game window, when the player quits
 
+from time import sleep
+# imported to pause the game momentarily when the ship is hit
+
 import pygame
 # ^ The pygame module contains the functionality we need to make a game
 
 from settings import Settings
 # ^ this imports the Settings class from settings.py
+
+from game_stats import GameStats
 
 from ship import Ship
 # import  the Ship class
@@ -41,6 +46,9 @@ class AlienInvasion:
 
         pygame.display.set_caption("Alien Invasion")
         # ^ pygame.display.set_caption titles our game window 
+
+        # create an instance to store game stats
+        self.stats = GameStats(self)
 
         self.ship = Ship(self)
         # ^ here we create an instance of ship, after the screen has been created
@@ -148,7 +156,7 @@ class AlienInvasion:
         number_of_aliens_x = available_space_x // (2 * alien_width)
 
         # determine the number of rows that can fit on my screen size
-        ship_height = self.ship.ship_rect.height
+        ship_height = self.ship.rect.height
         available_space_y = self.settings.screen_height - (3 * alien_height) - ship_height
         number_rows = available_space_y // (2 * alien_height)
 
@@ -183,6 +191,25 @@ class AlienInvasion:
         if self.settings.alien_speed < 1.5:
             self.settings.alien_speed += 0.1
 
+    def _ship_hit(self):
+        """ Respond to the ship being hit by an alien """
+        #decrement lives
+        self.settings.lives -= 1
+
+        # get rid of remaining aliens and bullets
+        self.aliens.empty()
+        self.bullets.empty()
+
+        # create a new fleet and center the ship 
+        self._create_fleet()
+        self.ship.center_ship()
+
+        # reset alien_speed
+        self.settings.alien_speed = 0.5
+
+        # pause the game
+        sleep(0.5)
+
     def _update_aliens(self):
         """ check if fleet is at the edge, then update the position of all aliens in the fleet """
         self._check_fleet_edges()
@@ -190,7 +217,7 @@ class AlienInvasion:
 
         # look for collision between ship and alien
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
-            print("Ship Hit!")
+            self._ship_hit()
 
 
 
